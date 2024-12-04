@@ -4,7 +4,9 @@ import android.util.Log
 import android.util.Log.i
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -30,6 +33,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.myjar.jarassignment.data.model.ComputerItem
 import com.myjar.jarassignment.ui.vm.JarViewModel
+import com.myjar.jarassignment.utils.orEmpty
 
 @Composable
 fun AppNavigation(
@@ -106,7 +110,34 @@ fun ItemCard(item: ComputerItem, onClick: () -> Unit) {
             .padding(8.dp)
             .clickable { onClick() }
     ) {
-        Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.Black)
+        Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.Black, fontSize = 22.sp)
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(text = item.data?.price.orEmpty().toString(), fontWeight = FontWeight.Normal, color = Color.Black, fontSize = 16.sp)
+                Text(text =  item.data?.capacityGB.orEmpty().toString(), fontWeight = FontWeight.Normal, color = Color.Black, fontSize = 16.sp)
+                Text(text =  item.data?.screenSize.orEmpty().toString(), fontWeight = FontWeight.Normal, color = Color.Black, fontSize = 16.sp)
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(text =  item.data?.generation.orEmpty(), fontWeight = FontWeight.Normal, color = Color.Black, fontSize = 16.sp)
+                Text(text =  item.data?.strapColour.orEmpty(), fontWeight = FontWeight.Normal, color = Color.Black, fontSize = 16.sp)
+                Text(text =  item.data?.caseSize.orEmpty(), fontWeight = FontWeight.Normal, color = Color.Black, fontSize = 16.sp)
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(text =  item.data?.cpuModel.orEmpty(), fontWeight = FontWeight.Normal, color = Color.Black, fontSize = 16.sp)
+                Text(text =  item.data?.hardDiskSize.orEmpty(), fontWeight = FontWeight.Normal, color = Color.Black, fontSize = 16.sp)
+            }
+        }
     }
 }
 

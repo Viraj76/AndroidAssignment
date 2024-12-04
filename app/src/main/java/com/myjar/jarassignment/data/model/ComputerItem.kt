@@ -11,7 +11,7 @@ data class ComputerItem(
 data class ItemData(
     val color: String? = null,
     val capacity: String? = null,
-    @SerializedName("price") val price: Double? = null,
+    @SerializedName("Price") val price: Double? = null,
     @SerializedName("capacity GB") val capacityGB: Int? = null,
     @SerializedName("Screen size") val screenSize: Double? = null,
     @SerializedName("Description") val description: String? = null,
