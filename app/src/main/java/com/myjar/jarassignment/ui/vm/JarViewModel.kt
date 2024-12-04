@@ -13,18 +13,23 @@ import kotlinx.coroutines.launch
 
 class JarViewModel : ViewModel() {
 
-    private val _listStringData = MutableStateFlow<List<ComputerItem>>(emptyList())
-    val listStringData: StateFlow<List<ComputerItem>>
+    private val _listStringData = MutableStateFlow(ProductState())
+    val listStringData: MutableStateFlow<ProductState>
         get() = _listStringData
 
     private val repository: JarRepository = JarRepositoryImpl(createRetrofit())
 
     fun fetchData() {
         viewModelScope.launch {
-             repository.fetchResults().collect{
-                 Log.d("Itemssss", it.toString())
-                 _listStringData.value = it
+             repository.fetchResults().collect{computerItemList->
+                 Log.d("Itemssss", computerItemList.toString())
+                 _listStringData.value = listStringData.value.copy(fetchedProductList = computerItemList)
              }
         }
     }
 }
+
+data class ProductState(
+    val fetchedProductList : List<ComputerItem> = emptyList(),
+    val searchedProductList : List<ComputerItem> = emptyList(),
+)

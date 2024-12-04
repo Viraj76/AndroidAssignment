@@ -74,11 +74,7 @@ fun ItemListScreen(
     navController: NavHostController
 ) {
     val items = viewModel.listStringData.collectAsStateWithLifecycle()
-    LaunchedEffect(Unit) {
-        for(i  in items.value){
 
-        }
-    }
 
     if (navigate.value.isNotBlank()) {
         val currRoute = navController.currentDestination?.route.orEmpty()
@@ -91,7 +87,7 @@ fun ItemListScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        items(items.value, key = {it.id}) { item ->
+        items(items.value.fetchedProductList, key = {it.id}) { item ->
             Log.d("OneItems", item.toString())
             ItemCard(
                 item = item,
