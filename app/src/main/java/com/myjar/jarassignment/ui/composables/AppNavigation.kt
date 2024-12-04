@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -59,11 +60,10 @@ fun ItemListScreen(
     navigate: MutableState<String>,
     navController: NavHostController
 ) {
-    val items = viewModel.listStringData.collectAsState()
+    val items = viewModel.listStringData.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         for(i  in items.value){
             Log.d("Items", i.toString())
-
         }
     }
 
