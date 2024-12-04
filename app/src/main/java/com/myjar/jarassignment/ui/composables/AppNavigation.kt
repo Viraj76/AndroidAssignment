@@ -2,6 +2,7 @@ package com.myjar.jarassignment.ui.composables
 
 import android.util.Log
 import android.util.Log.i
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -49,7 +50,14 @@ fun AppNavigation(
         }
         composable("item_detail/{itemId}") { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
-            ItemDetailScreen(itemId = itemId)
+            ItemDetailScreen(itemId = itemId){
+                navigate.value = ""  // remove the stored item's id
+                    navController.navigate("item_list"){
+                        popUpTo("item_list"){
+                            inclusive = true
+                        }
+                    }
+            }
         }
     }
 }
@@ -103,9 +111,16 @@ fun ItemCard(item: ComputerItem, onClick: () -> Unit) {
 }
 
 @Composable
-fun ItemDetailScreen(itemId: String?) {
+fun ItemDetailScreen(
+    itemId: String?,
+    goToItemListScreen : () -> Unit
+) {
     // Fetch the item details based on the itemId
     // Here, you can fetch it from the ViewModel or repository
+
+    BackHandler {
+        goToItemListScreen()
+    }
     Text(
         text = "Item Details for ID: $itemId",
         modifier = Modifier
