@@ -24,12 +24,28 @@ class JarViewModel : ViewModel() {
              repository.fetchResults().collect{computerItemList->
                  Log.d("Itemssss", computerItemList.toString())
                  _listStringData.value = listStringData.value.copy(fetchedProductList = computerItemList)
+                 searchProducts()
              }
         }
     }
+
+    fun searchProducts(initialFetchedProducts :  String = ""){
+        Log.d("Searching", initialFetchedProducts)
+
+        val searchedProductsList = listStringData.value.fetchedProductList.filter {
+            // we can add all other properties too. just name for now.
+            it.name.lowercase().contains(initialFetchedProducts.lowercase())
+        }
+
+        _listStringData.value = listStringData.value.copy(searchedProductList = searchedProductsList)
+    }
 }
 
+
+
+
 data class ProductState(
+    val searchingText : String = "",
     val fetchedProductList : List<ComputerItem> = emptyList(),
     val searchedProductList : List<ComputerItem> = emptyList(),
 )

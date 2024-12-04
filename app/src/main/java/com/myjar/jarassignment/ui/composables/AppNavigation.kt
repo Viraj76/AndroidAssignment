@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,7 +35,8 @@ import androidx.navigation.compose.rememberNavController
 import com.myjar.jarassignment.data.model.ComputerItem
 import com.myjar.jarassignment.ui.vm.JarViewModel
 import com.myjar.jarassignment.utils.orEmpty
-
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 @Composable
 fun AppNavigation(
     modifier: Modifier = Modifier,
@@ -82,18 +84,35 @@ fun ItemListScreen(
             navController.navigate("item_detail/${navigate.value}")
         }
     }
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+    var initialSearchedText by remember {  mutableStateOf("")  }
+
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
-        items(items.value.fetchedProductList, key = {it.id}) { item ->
-            Log.d("OneItems", item.toString())
-            ItemCard(
-                item = item,
-                onClick = { onNavigateToDetail(item.id) }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+            value = initialSearchedText,
+            onValueChange = {
+                initialSearchedText = it
+                viewModel.searchProducts(initialSearchedText)
+            },
+            placeholder = {
+                Text("Search Products")
+            }
+        )
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .padding(16.dp)
+        ) {
+            items(items.value.searchedProductList, key = {it.id}) { item ->
+                Log.d("OneItems", item.toString())
+                ItemCard(
+                    item = item,
+                    onClick = { onNavigateToDetail(item.id) }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 }
@@ -106,6 +125,9 @@ fun ItemCard(item: ComputerItem, onClick: () -> Unit) {
             .padding(8.dp)
             .clickable { onClick() }
     ) {
+
+
+
         Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.Black, fontSize = 22.sp)
         Column(
             modifier = Modifier.fillMaxWidth()
