@@ -1,6 +1,7 @@
 package com.myjar.jarassignment.ui.composables
 
 import android.util.Log
+import android.util.Log.i
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -63,7 +64,7 @@ fun ItemListScreen(
     val items = viewModel.listStringData.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         for(i  in items.value){
-            Log.d("Items", i.toString())
+
         }
     }
 
@@ -78,7 +79,8 @@ fun ItemListScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        items(items.value) { item ->
+        items(items.value, key = {it.id}) { item ->
+            Log.d("OneItems", item.toString())
             ItemCard(
                 item = item,
                 onClick = { onNavigateToDetail(item.id) }
@@ -96,7 +98,7 @@ fun ItemCard(item: ComputerItem, onClick: () -> Unit) {
             .padding(8.dp)
             .clickable { onClick() }
     ) {
-        Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.Transparent)
+        Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.Black)
     }
 }
 
