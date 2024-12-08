@@ -18,7 +18,6 @@ class JarViewModel : ViewModel() {
         get() = _listStringData
 
     private val repository: JarRepository = JarRepositoryImpl(createRetrofit())
-
     fun fetchData() {
         viewModelScope.launch {
              repository.fetchResults().collect{computerItemList->
